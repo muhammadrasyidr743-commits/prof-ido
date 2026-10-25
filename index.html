@@ -1,0 +1,722 @@
+
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#f8faf7">
+<title>Prof Ido — Your Curious Space</title>
+<style>
+:root{
+  --bg:#f6f8f4;--paper:#fffefa;--ink:#263d46;
+  --muted:#829399;--blue:#a9ddfa;--mint:#c6f4df;
+  --green:#49b994;--line:#e6eee8;--shadow:0 12px 32px #385e5910;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;color:var(--ink);
+  font-family:"Trebuchet MS",Arial,sans-serif;
+  background:
+    radial-gradient(ellipse at 5% 0%,#e0f3ff,transparent 34%),
+    radial-gradient(ellipse at 95% 12%,#e1f8eb,transparent 32%),
+    var(--bg);
+  min-height:100vh;
+}
+button,input,textarea{font:inherit}
+button{cursor:pointer}
+button:focus-visible,input:focus-visible,textarea:focus-visible{
+  outline:2px solid #66b8c5;outline-offset:2px
+}
+button:disabled{opacity:.6;cursor:wait}
+header{
+  max-width:1100px;margin:auto;padding:19px 22px;
+  display:flex;justify-content:space-between;align-items:center;gap:12px
+}
+.brand{display:flex;align-items:center;gap:12px}
+.logo{
+  width:47px;height:47px;border:2px solid white;border-radius:17px;
+  display:grid;place-items:center;
+  background:linear-gradient(145deg,#fff,#c5f7e0 48%,#a6dfff);
+  box-shadow:inset -5px -6px 10px #71bce1,0 4px 12px #ccebe4
+}
+.orb-mini{
+  width:23px;height:23px;border-radius:50%;
+  background:radial-gradient(circle at 28% 22%,white,#a3f2d3 36%,#60a9e7 78%);
+  box-shadow:0 0 12px #9fe4ed
+}
+.brand h1{font-size:21px;letter-spacing:-1px;margin:0}
+.brand h1 span{color:#54b99d}
+.brand p{font-size:10px;color:var(--muted);margin:4px 0 0}
+.online{
+  border:1px solid #d6efe1;background:#eaf9f0;color:#478d73;
+  border-radius:100px;padding:8px 11px;font-size:10px
+}
+.layout{
+  max-width:1100px;margin:auto;padding:0 22px 25px;
+  display:grid;grid-template-columns:195px minmax(0,1fr);gap:20px
+}
+.sidebar{
+  align-self:start;position:sticky;top:12px;padding:12px;
+  border:1px solid #e7eee9;border-radius:22px;
+  background:#fffefaD9;box-shadow:var(--shadow)
+}
+.nav-label{font-size:9px;letter-spacing:1.5px;color:#a0adaa;padding:10px}
+.nav-button{
+  width:100%;display:flex;align-items:center;gap:10px;
+  padding:11px 10px;margin:3px 0;border:0;border-radius:12px;
+  background:transparent;color:#74868b;text-align:left;font-size:12px
+}
+.nav-button:hover{background:#f2f8f4}
+.nav-button.active{
+  color:#316c70;font-weight:bold;
+  background:linear-gradient(110deg,#e6f5ff,#e4f8ed)
+}
+.nav-icon{
+  width:25px;height:25px;display:grid;place-items:center;
+  background:#ffffffbd;border-radius:9px;font-size:14px
+}
+.sidebar-note{
+  margin-top:18px;padding:12px;border-radius:13px;
+  background:#f3f8f3;color:#8b9b94;font-size:10px;line-height:1.8
+}
+.content{min-width:0}
+.page{display:none;animation:appear .2s ease}
+.page.active{display:block}
+@keyframes appear{from{opacity:.3;transform:translateY(4px)}to{opacity:1;transform:translateY(0)}}
+.hero{
+  position:relative;overflow:hidden;padding:32px;
+  min-height:285px;border:1px solid white;border-radius:26px;
+  background:
+    radial-gradient(circle at 92% 20%,#d5f8e6,transparent 28%),
+    radial-gradient(circle at 95% 100%,#d8efff,transparent 42%),
+    #fffefa;box-shadow:var(--shadow)
+}
+.eyebrow{font-size:10px;color:#4b9a81;letter-spacing:2px;font-weight:bold}
+.hero h2{
+  position:relative;z-index:1;max-width:390px;
+  margin:18px 0 12px;font-size:clamp(30px,4.8vw,43px);
+  line-height:1.12;letter-spacing:-2px
+}
+.gradient-text{color:#52a9bc}
+.hero p{position:relative;z-index:1;max-width:390px;font-size:12px;line-height:1.9;color:#7c8e92}
+.orb{
+  position:absolute;right:35px;top:62px;width:142px;height:142px;
+  border:5px solid #ffffffc9;border-radius:50%;
+  background:radial-gradient(circle at 28% 23%,white 0 4%,#e5fff5 9%,transparent 24%),
+    radial-gradient(circle at 35% 33%,#c4ffe5,#86e4d1 27%,#79c8ef 55%,#6799dc 78%,#d0f5e5);
+  box-shadow:inset -15px -16px 26px #386cb329,0 0 0 9px #d4f0ed77,0 18px 38px #69aebd35;
+  animation:float 5s ease-in-out infinite
+}
+@keyframes float{0%,100%{transform:translateY(0) rotate(-3deg)}50%{transform:translateY(-8px) rotate(3deg)}}
+.primary{
+  border:0;border-radius:12px;padding:12px 15px;
+  background:linear-gradient(110deg,#b8e7ff,#bdf2d9);
+  color:#326e70;font-size:11px;font-weight:bold;
+  box-shadow:0 5px 13px #85c6bd25
+}
+.primary:hover{filter:brightness(1.025)}
+.soft-button{
+  border:1px solid #e0eae4;background:#fff;color:#637f7d;
+  padding:9px 12px;border-radius:10px;font-size:11px
+}
+.danger{color:#ad6868;border-color:#f1dddd}
+.section-title{
+  display:flex;align-items:center;justify-content:space-between;
+  gap:10px;margin:23px 2px 12px
+}
+.section-title h3{margin:0;font-size:14px}
+.section-title span{font-size:10px;color:#9aa8a4}
+.cards{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
+.card,.surface{
+  background:#fffefaf2;border:1px solid white;
+  border-radius:20px;box-shadow:var(--shadow)
+}
+.card{padding:17px}
+.card-symbol{
+  width:35px;height:35px;display:grid;place-items:center;
+  border-radius:12px;background:#e5f7ed;margin-bottom:12px;font-size:16px
+}
+.card h3{font-size:12px;margin:0 0 6px}
+.card p{font-size:11px;color:#869498;line-height:1.8;margin:0}
+.surface{padding:21px;margin-bottom:14px}
+.surface h2{font-size:19px;letter-spacing:-.5px;margin:0 0 8px}
+.desc{font-size:12px;color:#859398;line-height:1.8}
+.chat-head{display:flex;align-items:center;gap:10px;padding-bottom:15px;border-bottom:1px solid var(--line)}
+.chat-orb{
+  width:37px;height:37px;flex-shrink:0;border-radius:50%;
+  background:radial-gradient(circle at 30% 25%,white,#a8f2d5 35%,#77b8ee 75%);
+  box-shadow:0 0 0 4px #eff9f3
+}
+.chat-head h2{font-size:14px;margin:0 0 4px}
+.chat-head p{font-size:10px;color:#96a39f;margin:0}
+.chat-head .soft-button{margin-left:auto}
+.dot{display:inline-block;width:6px;height:6px;border-radius:50%;background:#4fc99b;margin-right:5px}
+#chatbox{
+  height:min(48vh,430px);min-height:270px;overflow:auto;
+  padding:14px 0;scroll-behavior:smooth
+}
+.message-row{display:flex;align-items:flex-start;gap:8px;margin:12px 0}
+.message-row.user-row{justify-content:flex-end}
+.avatar{
+  flex-shrink:0;width:27px;height:27px;display:grid;place-items:center;
+  border-radius:10px;background:#e2f6eb;font-size:11px
+}
+.user-row .avatar{order:2;background:#e4f2ff}
+.bubble{
+  max-width:85%;padding:11px 13px;border-radius:5px 15px 15px;
+  background:#f0f8f3;font-size:12px;line-height:1.85;
+  white-space:pre-wrap;overflow-wrap:anywhere
+}
+.user-row .bubble{border-radius:15px 5px 15px 15px;background:#eaf5ff}
+.chat-form{
+  display:flex;gap:8px;align-items:center;padding:7px;
+  border:1px solid #e5eee8;border-radius:15px;background:#fbfdf9
+}
+.chat-form input{
+  flex:1;min-width:0;padding:10px;border:0;outline:0;
+  background:transparent;color:var(--ink);font-size:12px
+}
+.send-button{
+  flex-shrink:0;width:42px;height:42px;border:0;border-radius:12px;
+  background:linear-gradient(135deg,#bff4dc,#b6e4ff);color:#347d81;font-size:19px
+}
+.footnote{font-size:10px;color:#9ba8a4;line-height:1.7;margin:10px 3px 0}
+.entry{
+  padding:14px;margin-top:10px;border:1px solid #e8efe9;
+  border-radius:15px;background:#f8faf7;overflow-wrap:anywhere
+}
+.entry strong{font-size:12px}
+.entry p{font-size:10px;line-height:1.7;color:#899996}
+.entry-actions{display:flex;gap:6px;flex-wrap:wrap;margin-top:9px}
+.feature{
+  padding:15px;margin-top:10px;border-radius:15px;
+  background:#f6faf6;border:1px solid #eaf1ec
+}
+.feature strong{font-size:12px}
+.feature p{font-size:11px;color:#80908d;line-height:1.8;margin-bottom:0}
+.field-label{display:block;font-size:11px;margin:15px 0 7px}
+.field{
+  width:100%;border:1px solid #dce8e1;border-radius:11px;
+  background:#fcfefa;padding:12px;color:var(--ink);font-size:12px
+}
+.prompt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;margin-top:17px}
+.prompt-card{
+  border:1px solid #e3eee7;border-radius:14px;padding:13px;
+  text-align:left;background:#f8fbf8;color:#567b78;font-size:11px;line-height:1.7
+}
+.prompt-card:hover{background:#ecf9f2}
+.empty{padding:20px 10px;text-align:center;color:#94a29d;font-size:12px;line-height:1.8}
+footer{text-align:center;padding:20px;color:#9aa7a2;font-size:10px;line-height:1.8}
+.mobile-label{display:none}
+@media(max-width:760px){
+  header{padding:16px}
+  .layout{display:block;padding:0 12px 20px}
+  .sidebar{position:static;margin-bottom:13px;padding:7px;overflow-x:auto}
+  .nav-label,.sidebar-note{display:none}
+  .sidebar nav{display:flex;gap:3px;min-width:max-content}
+  .nav-button{width:auto;min-width:65px;flex-direction:column;gap:4px;margin:0;padding:8px 6px;font-size:10px}
+  .hero{padding:26px 19px;min-height:335px}
+  .hero h2{font-size:34px;max-width:300px}
+  .hero p{max-width:330px}
+  .orb{width:95px;height:95px;right:20px;top:20px}
+  .surface{padding:15px}
+  .online{font-size:9px}
+}
+@media(max-width:390px){
+  .brand h1{font-size:18px}
+  .brand p{font-size:9px}
+  .online{display:none}
+  .cards,.prompt-grid{grid-template-columns:1fr}
+  .hero h2{font-size:30px}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <div class="brand">
+    <div class="logo"><div class="orb-mini"></div></div>
+    <div>
+      <h1>prof ido<span>.</span></h1>
+      <p>A little more curious, every day.</p>
+    </div>
+  </div>
+  <div class="online" id="connectionBadge">✦ Personal AI space</div>
+</header>
+
+<div class="layout">
+  <aside class="sidebar">
+    <div class="nav-label">YOUR WORKSPACE</div>
+    <nav>
+      <button class="nav-button active" data-tab="home"><span class="nav-icon">⌂</span>Beranda</button>
+      <button class="nav-button" data-tab="assistant"><span class="nav-icon">✳</span>Asisten AI</button>
+      <button class="nav-button" data-tab="history"><span class="nav-icon">◷</span>Riwayat</button>
+      <button class="nav-button" data-tab="explore"><span class="nav-icon">✧</span>Jelajahi</button>
+      <button class="nav-button" data-tab="notes"><span class="nav-icon">▤</span>Catatan</button>
+      <button class="nav-button" data-tab="settings"><span class="nav-icon">⚙</span>Pengaturan</button>
+      <button class="nav-button" data-tab="about"><span class="nav-icon">ⓘ</span>Tentang</button>
+    </nav>
+    <div class="sidebar-note">
+      <b>little reminder ✿</b><br>
+      Stay curious. Keep learning. Build something meaningful.
+    </div>
+  </aside>
+
+  <main class="content">
+    <section class="page active" id="home">
+      <div class="hero">
+        <div class="orb"></div>
+        <div class="eyebrow">WELCOME TO YOUR SPACE</div>
+        <h2>A curious mind<br>goes <span class="gradient-text">a long way.</span></h2>
+        <p>Tempat untuk bertanya, belajar, mencatat ide, dan menemukan hal baru. Mulai dari satu pertanyaan kecil.</p>
+        <button class="primary" onclick="newChat()">Mulai percakapan ↗</button>
+      </div>
+
+      <div class="section-title"><h3>What do you need today?</h3><span>your space, your pace</span></div>
+      <div class="cards">
+        <button class="card" style="text-align:left" onclick="openTab('assistant')">
+          <div class="card-symbol">✳</div><h3>Ask Prof Ido</h3><p>Tanya, diskusikan ide, atau minta penjelasan.</p>
+        </button>
+        <button class="card" style="text-align:left" onclick="openTab('explore')">
+          <div class="card-symbol">✧</div><h3>Find inspiration</h3><p>Pilih contoh pertanyaan untuk memulai.</p>
+        </button>
+        <button class="card" style="text-align:left" onclick="openTab('notes')">
+          <div class="card-symbol">▤</div><h3>Save an idea</h3><p>Simpan pemikiran yang ingin kamu ingat.</p>
+        </button>
+        <button class="card" style="text-align:left" onclick="openTab('history')">
+          <div class="card-symbol">◷</div><h3>Pick up where you left</h3><p>Buka percakapan yang pernah disimpan.</p>
+        </button>
+      </div>
+      <div class="section-title"><h3>Recently discussed</h3><button class="soft-button" onclick="openTab('history')">Lihat semua →</button></div>
+      <div class="surface" id="recentHome"><div class="empty">Percakapanmu akan muncul di sini setelah kamu mulai menggunakan Prof Ido.</div></div>
+    </section>
+
+    <section class="page" id="assistant">
+      <div class="surface">
+        <div class="chat-head">
+          <div class="chat-orb"></div>
+          <div>
+            <h2>Prof Ido</h2>
+            <p><span class="dot"></span><span id="chatStatus">Siap mengobrol</span></p>
+          </div>
+          <button class="soft-button" style="margin-left:auto" onclick="newChat()">＋ Baru</button>
+        </div>
+        <div id="chatbox" aria-live="polite">
+          <div class="message-row"><div class="avatar">✳</div><div class="bubble">Halo! Saya Prof Ido. Apa yang ingin Anda pelajari atau diskusikan hari ini?</div></div>
+        </div>
+        <form class="chat-form" id="chatForm">
+          <input id="prompt" maxlength="2000" placeholder="Tanyakan sesuatu..." autocomplete="off" required>
+          <button class="send-button" id="sendButton" aria-label="Kirim pesan" type="submit">↗</button>
+        </form>
+        <p class="footnote">Jawaban AI bisa keliru. Jangan masukkan kata sandi atau data rahasia.</p>
+      </div>
+    </section>
+
+    <section class="page" id="history">
+      <div class="surface">
+        <h2>Your conversation archive ✿</h2>
+        <p class="desc">Percakapan tersimpan di browser perangkat ini. Buka kembali atau hapus percakapan yang tidak diperlukan.</p>
+        <input class="field" id="historySearch" placeholder="Cari percakapan...">
+        <div id="historyList"></div>
+      </div>
+    </section>
+
+    <section class="page" id="explore">
+      <div class="surface">
+        <h2>A little inspiration ✧</h2>
+        <p class="desc">Pilih salah satu ide. Prof Ido akan membuka chat dan mengirimkannya sebagai pertanyaan.</p>
+        <div class="prompt-grid">
+          <button class="prompt-card" data-prompt="Jelaskan konsep sulit dengan bahasa sederhana dan berikan contoh.">✦ Jelaskan konsep sulit</button>
+          <button class="prompt-card" data-prompt="Bantu saya membuat rencana belajar yang realistis untuk minggu ini.">☁ Rencana belajar</button>
+          <button class="prompt-card" data-prompt="Berikan lima ide proyek website sederhana yang dapat saya buat untuk belajar.">⌘ Ide proyek website</button>
+          <button class="prompt-card" data-prompt="Ajari saya dasar Python secara bertahap dengan contoh kode dan latihan.">▤ Belajar Python</button>
+          <button class="prompt-card" data-prompt="Bantu saya mengembangkan sebuah ide usaha kecil dengan menjelaskan langkah awal, risiko, dan cara mengujinya.">✧ Kembangkan ide usaha</button>
+          <button class="prompt-card" data-prompt="Beri saya satu fakta menarik tentang sains dan jelaskan mengapa hal itu penting.">◎ Fakta menarik</button>
+        </div>
+      </div>
+    </section>
+
+    <section class="page" id="notes">
+      <div class="surface">
+        <h2>Your little notebook ✿</h2>
+        <p class="desc">Simpan ide, ringkasan, dan hal yang ingin kamu ingat. Catatan disimpan secara lokal.</p>
+        <input class="field" id="noteTitle" maxlength="100" placeholder="Judul catatan">
+        <label class="field-label" for="noteBody">Isi catatan</label>
+        <textarea class="field" id="noteBody" rows="5" maxlength="10000" placeholder="Tulis ide di sini..."></textarea>
+        <p>
+          <button class="primary" id="saveNote">Simpan catatan</button>
+          <button class="soft-button" id="cancelEdit" hidden>Batal mengedit</button>
+        </p>
+        <p class="desc" id="noteStatus"></p>
+        <div class="section-title"><h3>Saved notes</h3><span id="noteCount">0 catatan</span></div>
+        <div id="notesList"></div>
+      </div>
+    </section>
+
+    <section class="page" id="settings">
+      <div class="surface">
+        <h2>Make yourself at home.</h2>
+        <p class="desc">Pengaturan dasar untuk pengalamanmu di Prof Ido.</p>
+        <label class="field-label" for="displayName">Nama tampilan</label>
+        <input class="field" id="displayName" maxlength="40" placeholder="Nama panggilan">
+        <p><button class="primary" id="saveSettings">Simpan perubahan</button></p>
+        <p class="desc" id="settingsMessage"></p>
+        <div class="feature"><strong>AI connection</strong><p id="apiInfo">Alamat backend: belum diperiksa. Pesan akan gagal jika server belum berjalan.</p><button class="soft-button" id="testConnection">Uji koneksi backend</button></div>
+        <div class="feature"><strong>Local storage</strong><p>Riwayat, catatan, dan nama disimpan di browser ini, bukan tersinkron otomatis ke perangkat lain.</p></div>
+        <div class="feature"><strong>Privacy</strong><p>API key harus disimpan di backend, bukan di kode HTML yang dipublikasikan.</p></div>
+      </div>
+    </section>
+
+    <section class="page" id="about">
+      <div class="surface">
+        <div class="orb" style="position:relative;top:auto;right:auto;width:88px;height:88px;margin:10px auto 24px"></div>
+        <h2 style="text-align:center">A little about Prof Ido</h2>
+        <p class="desc" style="text-align:center">Prof Ido adalah proyek asisten digital untuk belajar, bertanya, mengembangkan ide, dan menyimpan catatan. Dibangun secara bertahap dengan semangat ingin tahu.</p>
+        <div class="feature"><strong>Built to be useful</strong><p>Chat, riwayat percakapan, pertanyaan inspirasi, catatan, dan pengaturan dirancang untuk memiliki fungsi nyata.</p></div>
+        <p style="text-align:center;font-size:10px;color:#9aa7a2">Y2K-inspired · Built with curiosity · 2026</p>
+      </div>
+    </section>
+  </main>
+</div>
+
+<footer>Made with curiosity ✿<br><br>© 2026 by Rydh corporation</footer>
+
+<script>
+/* Ganti alamat ini dengan URL HTTPS backend ketika sudah di-host online. */
+const API_BASE = "http://127.0.0.1:8000";
+const $ = id => document.getElementById(id);
+
+let history = readStore("profido_history", []);
+let notes = readStore("profido_notes", []);
+let messages = [];
+let currentId = null;
+let editingNoteId = null;
+let busy = false;
+
+function readStore(key, fallback) {
+  try {
+    const value = JSON.parse(localStorage.getItem(key) || "null");
+    return Array.isArray(fallback) && !Array.isArray(value) ? fallback : (value ?? fallback);
+  } catch { return fallback; }
+}
+function saveStore(key, value) {
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+    return true;
+  } catch {
+    alert("Penyimpanan browser penuh. Hapus beberapa data yang tidak diperlukan.");
+    return false;
+  }
+}
+function makeId() {
+  return Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+}
+function openTab(name) {
+  document.querySelectorAll(".page").forEach(page => page.classList.toggle("active", page.id === name));
+  document.querySelectorAll("[data-tab]").forEach(button => button.classList.toggle("active", button.dataset.tab === name));
+  if (name === "history") renderHistory();
+  if (name === "notes") renderNotes();
+  if (name === "home") renderRecent();
+}
+document.querySelectorAll("[data-tab]").forEach(button => button.addEventListener("click", () => openTab(button.dataset.tab)));
+
+function addMessage(text, role) {
+  const row = document.createElement("div");
+  row.className = "message-row" + (role === "user" ? " user-row" : "");
+  const avatar = document.createElement("div");
+  avatar.className = "avatar";
+  avatar.textContent = role === "user" ? "●" : "✳";
+  const bubble = document.createElement("div");
+  bubble.className = "bubble";
+  bubble.textContent = text;
+  row.append(avatar, bubble);
+  $("chatbox").appendChild(row);
+  $("chatbox").scrollTop = $("chatbox").scrollHeight;
+}
+function showWelcome() {
+  $("chatbox").replaceChildren();
+  addMessage("Halo! Saya Prof Ido. Apa yang ingin Anda pelajari atau diskusikan hari ini?", "bot");
+}
+function newChat() {
+  currentId = null;
+  messages = [];
+  showWelcome();
+  $("chatStatus").textContent = "Percakapan baru";
+  $("prompt").value = "";
+  openTab("assistant");
+  $("prompt").focus();
+}
+function persistCurrent() {
+  if (!messages.length) return;
+  const firstUser = messages.find(m => m.role === "user");
+  if (!firstUser) return;
+  const existingIndex = history.findIndex(item => item.id === currentId);
+  const old = existingIndex >= 0 ? history[existingIndex] : null;
+  const item = {
+    id: currentId || makeId(),
+    title: firstUser.text.slice(0, 65),
+    date: new Date().toLocaleString("id-ID"),
+    updated: Date.now(),
+    messages: [...messages]
+  };
+  currentId = item.id;
+  if (existingIndex >= 0) history[existingIndex] = item;
+  else history.push(item);
+  history = history.slice(-60);
+  if (saveStore("profido_history", history)) {
+    renderHistory();
+    renderRecent();
+  }
+}
+function renderHistory() {
+  const list = $("historyList");
+  list.replaceChildren();
+  const query = ($("historySearch").value || "").trim().toLowerCase();
+  const filtered = [...history].reverse().filter(item => (item.title || "").toLowerCase().includes(query));
+  if (!filtered.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = history.length ? "Tidak ada percakapan yang cocok." : "Belum ada percakapan. Mulai chat untuk membuat riwayat.";
+    list.appendChild(empty);
+    return;
+  }
+  filtered.forEach(item => {
+    const entry = document.createElement("div");
+    entry.className = "entry";
+    const title = document.createElement("strong");
+    title.textContent = item.title || "Percakapan";
+    const date = document.createElement("p");
+    date.textContent = item.date || "";
+    const actions = document.createElement("div");
+    actions.className = "entry-actions";
+    const open = document.createElement("button");
+    open.className = "soft-button";
+    open.textContent = "Buka";
+    open.onclick = () => loadConversation(item.id);
+    const rename = document.createElement("button");
+    rename.className = "soft-button";
+    rename.textContent = "Ganti judul";
+    rename.onclick = () => {
+      const name = prompt("Judul percakapan baru:", item.title || "");
+      if (name === null || !name.trim()) return;
+      item.title = name.trim().slice(0, 65);
+      saveStore("profido_history", history);
+      renderHistory(); renderRecent();
+    };
+    const remove = document.createElement("button");
+    remove.className = "soft-button danger";
+    remove.textContent = "Hapus";
+    remove.onclick = () => {
+      if (!confirm("Hapus percakapan ini?")) return;
+      history = history.filter(h => h.id !== item.id);
+      if (currentId === item.id) { currentId = null; messages = []; showWelcome(); }
+      saveStore("profido_history", history);
+      renderHistory(); renderRecent();
+    };
+    actions.append(open, rename, remove);
+    entry.append(title, date, actions);
+    list.appendChild(entry);
+  });
+}
+function loadConversation(id) {
+  const item = history.find(h => h.id === id);
+  if (!item) return;
+  currentId = item.id;
+  messages = Array.isArray(item.messages) ? [...item.messages] : [];
+  $("chatbox").replaceChildren();
+  messages.forEach(m => addMessage(m.text, m.role));
+  $("chatStatus").textContent = "Riwayat dibuka";
+  openTab("assistant");
+}
+function renderRecent() {
+  const box = $("recentHome");
+  box.replaceChildren();
+  const recent = [...history].reverse().slice(0, 3);
+  if (!recent.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Percakapanmu akan muncul di sini setelah kamu mulai menggunakan Prof Ido.";
+    box.appendChild(empty); return;
+  }
+  recent.forEach(item => {
+    const entry = document.createElement("div");
+    entry.className = "entry";
+    const title = document.createElement("strong");
+    title.textContent = item.title || "Percakapan";
+    const date = document.createElement("p");
+    date.textContent = item.date || "";
+    const button = document.createElement("button");
+    button.className = "soft-button";
+    button.textContent = "Lanjutkan →";
+    button.onclick = () => loadConversation(item.id);
+    entry.append(title, date, button);
+    box.appendChild(entry);
+  });
+}
+
+async function askAI(text) {
+  const response = await fetch(API_BASE + "/chat", {
+    method: "POST",
+    headers: {"Content-Type": "application/json"},
+    body: JSON.stringify({
+      message: text,
+      history: messages.slice(0, -1).slice(-12)
+    })
+  });
+  let data = {};
+  try { data = await response.json(); } catch {}
+  if (!response.ok) throw new Error(data.detail || "Server mengembalikan kesalahan.");
+  if (typeof data.reply !== "string" || !data.reply.trim()) throw new Error("Jawaban AI kosong.");
+  return data.reply;
+}
+$("chatForm").addEventListener("submit", async event => {
+  event.preventDefault();
+  if (busy) return;
+  const text = $("prompt").value.trim();
+  if (!text) return;
+  busy = true;
+  $("prompt").value = "";
+  addMessage(text, "user");
+  messages.push({text, role:"user"});
+  $("sendButton").disabled = true;
+  $("chatStatus").textContent = "Sedang berpikir...";
+  try {
+    const answer = await askAI(text);
+    addMessage(answer, "bot");
+    messages.push({text:answer, role:"model"});
+    persistCurrent();
+    $("chatStatus").textContent = "Siap membantu Anda";
+    $("connectionBadge").textContent = "✦ AI connected";
+  } catch (error) {
+    const message = "Belum berhasil terhubung ke AI.\n" + error.message +
+      "\n\nPastikan backend aktif, API key benar, dan alamat server sesuai.";
+    addMessage(message, "bot");
+    messages.push({text:message, role:"model"});
+    $("chatStatus").textContent = "Koneksi bermasalah";
+  } finally {
+    busy = false;
+    $("sendButton").disabled = false;
+    $("prompt").focus();
+  }
+});
+
+document.querySelectorAll("[data-prompt]").forEach(button => {
+  button.addEventListener("click", () => {
+    newChat();
+    $("prompt").value = button.dataset.prompt;
+    $("prompt").focus();
+  });
+});
+$("historySearch").addEventListener("input", renderHistory);
+
+function renderNotes() {
+  const list = $("notesList");
+  list.replaceChildren();
+  $("noteCount").textContent = notes.length + " catatan";
+  if (!notes.length) {
+    const empty = document.createElement("div");
+    empty.className = "empty";
+    empty.textContent = "Belum ada catatan. Simpan ide pertamamu di atas.";
+    list.appendChild(empty); return;
+  }
+  [...notes].reverse().forEach(note => {
+    const entry = document.createElement("div");
+    entry.className = "entry";
+    const title = document.createElement("strong");
+    title.textContent = note.title || "Catatan tanpa judul";
+    const body = document.createElement("p");
+    body.style.whiteSpace = "pre-wrap";
+    body.textContent = note.body;
+    const date = document.createElement("p");
+    date.textContent = note.date || "";
+    const actions = document.createElement("div");
+    actions.className = "entry-actions";
+    const edit = document.createElement("button");
+    edit.className = "soft-button";
+    edit.textContent = "Edit";
+    edit.onclick = () => {
+      editingNoteId = note.id;
+      $("noteTitle").value = note.title;
+      $("noteBody").value = note.body;
+      $("saveNote").textContent = "Simpan perubahan";
+      $("cancelEdit").hidden = false;
+      $("noteTitle").focus();
+    };
+    const remove = document.createElement("button");
+    remove.className = "soft-button danger";
+    remove.textContent = "Hapus";
+    remove.onclick = () => {
+      if (!confirm("Hapus catatan ini?")) return;
+      notes = notes.filter(n => n.id !== note.id);
+      saveStore("profido_notes", notes);
+      renderNotes();
+    };
+    actions.append(edit, remove);
+    entry.append(title, body, date, actions);
+    list.appendChild(entry);
+  });
+}
+$("saveNote").addEventListener("click", () => {
+  const title = $("noteTitle").value.trim();
+  const body = $("noteBody").value.trim();
+  if (!title && !body) {
+    $("noteStatus").textContent = "Isi judul atau catatan terlebih dahulu.";
+    return;
+  }
+  if (editingNoteId) {
+    const note = notes.find(n => n.id === editingNoteId);
+    if (note) {
+      note.title = title || "Catatan tanpa judul";
+      note.body = body;
+      note.date = new Date().toLocaleString("id-ID");
+    }
+  } else {
+    notes.push({
+      id:makeId(), title:title || "Catatan tanpa judul",
+      body, date:new Date().toLocaleString("id-ID")
+    });
+  }
+  if (saveStore("profido_notes", notes)) {
+    $("noteTitle").value = "";
+    $("noteBody").value = "";
+    editingNoteId = null;
+    $("saveNote").textContent = "Simpan catatan";
+    $("cancelEdit").hidden = true;
+    $("noteStatus").textContent = "Catatan tersimpan.";
+    renderNotes();
+  }
+});
+$("cancelEdit").addEventListener("click", () => {
+  editingNoteId = null;
+  $("noteTitle").value = "";
+  $("noteBody").value = "";
+  $("saveNote").textContent = "Simpan catatan";
+  $("cancelEdit").hidden = true;
+  $("noteStatus").textContent = "";
+});
+$("saveSettings").addEventListener("click", () => {
+  localStorage.setItem("profido_name", $("displayName").value.trim());
+  $("settingsMessage").textContent = "Nama tampilan tersimpan di browser ini.";
+});
+$("displayName").value = localStorage.getItem("profido_name") || "";
+
+$("testConnection").addEventListener("click", async () => {
+  $("apiInfo").textContent = "Sedang memeriksa backend...";
+  try {
+    const response = await fetch(API_BASE + "/", {method:"GET"});
+    if (!response.ok) throw new Error("Status " + response.status);
+    const data = await response.json();
+    $("apiInfo").textContent = "Backend aktif: " + (data.status || "merespons");
+    $("connectionBadge").textContent = "✦ Backend online";
+  } catch {
+    $("apiInfo").textContent = "Belum terhubung. Periksa alamat API dan apakah server Python sedang berjalan.";
+    $("connectionBadge").textContent = "✦ Menunggu koneksi";
+  }
+});
+
+renderHistory();
+renderRecent();
+renderNotes();
+</script>
+</body>
+</html>
